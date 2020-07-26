@@ -1,5 +1,7 @@
 using AutoMapper;
 using BeamingBooks.API.Data;
+using BeamingBooks.API.Helpers;
+using BeamingBooks.API.Middleware;
 using BeamingBooks.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,14 +15,14 @@ namespace BeamingBooks.API
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // Add services to the DI container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -29,22 +31,19 @@ namespace BeamingBooks.API
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IAuthorService, AuthorService>();
             services.AddScoped<IGenreService, GenreService>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddDbContext<BeamingBooksContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(builder =>
-                {
-                    builder.WithOrigins("http://localhost:3000");
-                });
-            });
+            services.AddCors();
+
+            services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // Configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -54,9 +53,9 @@ namespace BeamingBooks.API
 
             app.UseRouting();
 
-            app.UseCors();
+            app.UseCors(x => x.AllowAnyOrigin());
 
-            app.UseAuthorization();
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
