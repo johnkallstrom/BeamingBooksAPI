@@ -22,7 +22,7 @@ namespace BeamingBooks.API.Middleware
             _jwtSettings = jwtSettings.Value;
         }
 
-        public async Task Invoke(HttpContext httpContext, IUserService userService)
+        public async Task Invoke(HttpContext httpContext, IAccountService accountService)
         {
             var token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
@@ -32,7 +32,7 @@ namespace BeamingBooks.API.Middleware
 
                 if (validatedToken != null)
                 {
-                    AttachUserToContext(httpContext, validatedToken, userService);
+                    AttachAccountToContext(httpContext, validatedToken, accountService);
                 }
             }
 
@@ -62,12 +62,12 @@ namespace BeamingBooks.API.Middleware
             }
         }
 
-        private void AttachUserToContext(HttpContext httpContext, SecurityToken token, IUserService userService)
+        private void AttachAccountToContext(HttpContext httpContext, SecurityToken token, IAccountService accountService)
         {
             var jwtToken = (JwtSecurityToken)token;
 
-            var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
-            httpContext.Items["User"] = userService.GetUser(userId);
+            var accountId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
+            httpContext.Items["Account"] = accountService.GetAccount(accountId);
         }
     }
 }

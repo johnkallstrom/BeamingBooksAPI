@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BeamingBooks.API.Models
 {
-    public class AuthorCreateDto
+    public class CreateAuthorDto
     {
         [Required(ErrorMessage = "Please enter a name.")]
         [MaxLength(50, ErrorMessage = "The name shouldn't have more than 50 characters.")]
@@ -17,6 +17,6 @@ namespace BeamingBooks.API.Models
         [MaxLength(50, ErrorMessage = "The country shouldn't have more than 50 characters.")]
         public string Country { get; set; }
 
-        public ICollection<BookCreateDto> Books { get; set; } = new List<BookCreateDto>();
+        public ICollection<CreateBookDto> Books { get; set; } = new List<CreateBookDto>();
     }
 }

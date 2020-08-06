@@ -10,10 +10,10 @@ namespace BeamingBooks.API.Profiles
                 .ForMember(dest => dest.Books, opt => opt.MapFrom(src => src.Book))
                 .ForMember(dest => dest.Born, opt => opt.MapFrom(src => src.Birthday.ToShortDateString()));
 
-            CreateMap<Models.AuthorCreateDto, Entities.Author>()
+            CreateMap<Models.CreateAuthorDto, Entities.Author>()
                 .ForMember(dest => dest.Book, opt => opt.MapFrom(src => src.Books));
 
-            CreateMap<Models.AuthorUpdateDto, Entities.Author>();
+            CreateMap<Models.UpdateAuthorDto, Entities.Author>();
         }
     }
 }

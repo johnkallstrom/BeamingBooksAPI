@@ -11,8 +11,8 @@ namespace BeamingBooks.API.Profiles
                 .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.Author.Name))
                 .ForMember(dest => dest.Genre, opt => opt.MapFrom(src => src.Genre.Name));
 
-            CreateMap<Models.BookCreateDto, Entities.Book>();
-            CreateMap<Models.BookUpdateDto, Entities.Book>();
+            CreateMap<Models.CreateBookDto, Entities.Book>();
+            CreateMap<Models.UpdateBookDto, Entities.Book>();
         }
     }
 }

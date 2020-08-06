@@ -11,7 +11,7 @@ namespace BeamingBooks.API.Helpers
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            var user = (User)context.HttpContext.Items["User"];
+            var user = (Account)context.HttpContext.Items["Account"];
             if (user == null)
             {
                 context.Result = new JsonResult(new { Message = "Unauthorized. Access denied." })

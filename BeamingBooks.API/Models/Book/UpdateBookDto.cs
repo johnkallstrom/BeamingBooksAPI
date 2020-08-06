@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BeamingBooks.API.Models
 {
-    public class BookUpdateDto
+    public class UpdateBookDto
     {
         [Required(ErrorMessage = "Please enter a title.")]
         [MaxLength(50, ErrorMessage = "The title shouldn't have more than 50 characters.")]

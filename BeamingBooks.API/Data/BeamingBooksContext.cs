@@ -14,21 +14,41 @@ namespace BeamingBooks.API.Data
         {
         }
 
+        public virtual DbSet<Account> Account { get; set; }
         public virtual DbSet<Author> Author { get; set; }
         public virtual DbSet<Book> Book { get; set; }
         public virtual DbSet<Genre> Genre { get; set; }
-        public virtual DbSet<User> User { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
+                // To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Server=localhost;Database=BeamingBooks;Trusted_Connection=True;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Account>(entity =>
+            {
+                entity.Property(e => e.Created).HasColumnType("datetime");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.LastName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.PasswordHash).IsRequired();
+            });
+
             modelBuilder.Entity<Author>(entity =>
             {
                 entity.Property(e => e.Birthday).HasColumnType("datetime");
@@ -66,19 +86,6 @@ namespace BeamingBooks.API.Data
             modelBuilder.Entity<Genre>(entity =>
             {
                 entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(50);
-            });
-
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.Property(e => e.Email).HasMaxLength(50);
-
-                entity.Property(e => e.Password)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.Username)
                     .IsRequired()
                     .HasMaxLength(50);
             });

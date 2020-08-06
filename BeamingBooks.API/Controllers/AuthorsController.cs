@@ -42,7 +42,7 @@ namespace BeamingBooks.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult<AuthorDto> CreateAuthor(AuthorCreateDto author)
+        public ActionResult<AuthorDto> CreateAuthor(CreateAuthorDto author)
         {
             var authorEntity = _mapper.Map<Author>(author);
             _authorService.AddAuthor(authorEntity);
@@ -52,7 +52,7 @@ namespace BeamingBooks.API.Controllers
         }
 
         [HttpPut("{authorId}")]
-        public IActionResult UpdateAuthor(int authorId, AuthorUpdateDto author)
+        public IActionResult UpdateAuthor(int authorId, UpdateAuthorDto author)
         {
             if (!_authorService.AuthorExists(authorId)) return NotFound();
 
