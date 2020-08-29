@@ -46,6 +46,23 @@ namespace BeamingBooks.API.Services
             return response;
         }
 
+        public void Register(RegisterAccountDto model)
+        {
+            // validate entered email
+            if (_context.Account.Any(a => a.Email == model.Email)) throw new EmailExistsException("The email you entered already exists.");
+
+            // map dto to entity
+            var account = _mapper.Map<Account>(model);
+
+            // hash password and set created date
+            account.PasswordHash = BC.HashPassword(model.Password);
+            account.Created = DateTime.UtcNow;
+
+            // save to db
+            _context.Account.Add(account);
+            _context.SaveChanges();
+        }
+
         public IEnumerable<Account> GetAccounts()
         {
             return _context.Account.ToList();

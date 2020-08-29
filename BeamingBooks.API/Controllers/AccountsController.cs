@@ -2,7 +2,6 @@
 using BeamingBooks.API.Exceptions;
 using BeamingBooks.API.Helpers;
 using BeamingBooks.API.Models;
-using BeamingBooks.API.Models.Account;
 using BeamingBooks.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +22,21 @@ namespace BeamingBooks.API.Controllers
         {
             _mapper = mapper;
             _accountService = accountService;
+        }
+
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public IActionResult RegisterAccount(RegisterAccountDto model)
+        {
+            try
+            {
+                _accountService.Register(model);
+                return Ok(new { Message = "Registration successful." });
+            }
+            catch (EmailExistsException e)
+            {
+                return BadRequest(new { e.Message });
+            }
         }
 
         [AllowAnonymous]
@@ -47,11 +61,15 @@ namespace BeamingBooks.API.Controllers
             return Ok(_mapper.Map<IEnumerable<AccountDto>>(accounts));
         }
 
-        [AllowAnonymous]
-        [HttpPost]
-        public IActionResult RegisterAccount(RegisterAccountDto model)
+        [CustomAuthorize]
+        [HttpGet("{accountId}")]
+        public ActionResult<AccountDto> GetAccount(int accountId)
         {
+            var account = _accountService.GetAccount(accountId);
 
+            if (account == null) return NotFound();
+
+            return Ok(_mapper.Map<AccountDto>(account));
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BeamingBooks.API.Models.Account
+namespace BeamingBooks.API.Models
 {
     public class RegisterAccountDto
     {

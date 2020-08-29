@@ -9,6 +9,6 @@ namespace BeamingBooks.API.Services
         AuthenticateResponse AuthenticateAccount(string email, string password);
         IEnumerable<Account> GetAccounts();
         Account GetAccount(int id);
-        void Register();
+        void Register(RegisterAccountDto model);
     }
 }

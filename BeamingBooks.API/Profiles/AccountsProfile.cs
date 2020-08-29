@@ -8,6 +8,7 @@ namespace BeamingBooks.API.Profiles
         {
             CreateMap<Entities.Account, Models.AccountDto>();
             CreateMap<Entities.Account, Models.AuthenticateResponse>();
+            CreateMap<Models.RegisterAccountDto, Entities.Account>();
         }
     }
 }
