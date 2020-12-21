@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace BeamingBooks.API.Entities
 {
@@ -7,12 +6,12 @@ namespace BeamingBooks.API.Entities
     {
         public Genre()
         {
-            Book = new HashSet<Book>();
+            Books = new HashSet<Book>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public virtual ICollection<Book> Book { get; set; }
+        public virtual ICollection<Book> Books { get; set; }
     }
 }

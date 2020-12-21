@@ -19,7 +19,7 @@ namespace BeamingBooks.API.Services
 
         public IEnumerable<Book> GetBooks()
         {
-            return _context.Book
+            return _context.Books
                 .Include(b => b.Author)
                 .Include(b => b.Genre)
                 .ToList();
@@ -42,7 +42,7 @@ namespace BeamingBooks.API.Services
                 }
             }
 
-            var collection = _context.Book
+            var collection = _context.Books
                 .Include(b => b.Author)
                 .Include(b => b.Genre) as IQueryable<Book>;
 
@@ -87,7 +87,7 @@ namespace BeamingBooks.API.Services
 
         public Book GetBook(int bookId)
         {
-            return _context.Book
+            return _context.Books
                 .Include(b => b.Author)
                 .Include(b => b.Genre)
                 .FirstOrDefault(b => b.Id == bookId);
@@ -99,7 +99,7 @@ namespace BeamingBooks.API.Services
 
             book.AuthorId = authorId;
 
-            _context.Book.Add(book);
+            _context.Books.Add(book);
             _context.SaveChanges();
         }
 
@@ -107,7 +107,7 @@ namespace BeamingBooks.API.Services
         {
             if (book == null) throw new ArgumentNullException(nameof(book));
 
-            _context.Book.Update(book);
+            _context.Books.Update(book);
             _context.SaveChanges();
         }
 
@@ -115,7 +115,7 @@ namespace BeamingBooks.API.Services
         {
             if (book == null) throw new ArgumentNullException(nameof(book));
 
-            _context.Book.Remove(book);
+            _context.Books.Remove(book);
             _context.SaveChanges();
         }
     }

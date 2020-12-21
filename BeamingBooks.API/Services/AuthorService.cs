@@ -19,15 +19,15 @@ namespace BeamingBooks.API.Services
 
         public IEnumerable<Author> GetAuthors()
         {
-            return _context.Author
-                .Include(a => a.Book)
+            return _context.Authors
+                .Include(a => a.Books)
                 .ToList();
         }
 
         public Author GetAuthor(int authorId)
         {
-            return _context.Author
-                .Include(a => a.Book)
+            return _context.Authors
+                .Include(a => a.Books)
                 .FirstOrDefault(a => a.Id == authorId);
         }
 
@@ -44,7 +44,7 @@ namespace BeamingBooks.API.Services
                 return GetAuthors();
             }
 
-            var collection = _context.Author.Include(a => a.Book) as IQueryable<Author>;
+            var collection = _context.Authors.Include(a => a.Books) as IQueryable<Author>;
 
             if (!string.IsNullOrWhiteSpace(authorResourceParameters.SearchQuery))
             {
@@ -71,7 +71,7 @@ namespace BeamingBooks.API.Services
         {
             if (author == null) throw new ArgumentNullException(nameof(author));
 
-            _context.Author.Add(author);
+            _context.Authors.Add(author);
             _context.SaveChanges();
         }
 
@@ -79,7 +79,7 @@ namespace BeamingBooks.API.Services
         {
             if (author == null) throw new ArgumentNullException(nameof(author));
 
-            _context.Author.Update(author);
+            _context.Authors.Update(author);
             _context.SaveChanges();
         }
 
@@ -87,18 +87,18 @@ namespace BeamingBooks.API.Services
         {
             if (author == null) throw new ArgumentNullException(nameof(author));
 
-            if (author.Book.Count >= 1)
+            if (author.Books.Count >= 1)
             {
-                _context.RemoveRange(author.Book);
+                _context.RemoveRange(author.Books);
             }
 
-            _context.Author.Remove(author);
+            _context.Authors.Remove(author);
             _context.SaveChanges();
         }
 
         public bool AuthorExists(int authorId)
         {
-            return _context.Author.Any(a => a.Id == authorId);
+            return _context.Authors.Any(a => a.Id == authorId);
         }
     }
 }

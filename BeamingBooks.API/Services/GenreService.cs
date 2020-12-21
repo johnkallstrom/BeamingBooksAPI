@@ -18,7 +18,7 @@ namespace BeamingBooks.API.Services
 
         public IEnumerable<Genre> GetGenres()
         {
-            return _context.Genre.ToList();
+            return _context.Genres.ToList();
         }
 
         public IEnumerable<Genre> GetGenres(
@@ -32,7 +32,7 @@ namespace BeamingBooks.API.Services
                 return GetGenres();
             }
 
-            var collection = _context.Genre as IQueryable<Genre>;
+            var collection = _context.Genres as IQueryable<Genre>;
 
             if (!string.IsNullOrWhiteSpace(genreResourceParameters.SearchQuery))
             {
@@ -51,7 +51,7 @@ namespace BeamingBooks.API.Services
 
         public Genre GetGenre(int genreId)
         {
-            return _context.Genre.FirstOrDefault(g => g.Id == genreId);
+            return _context.Genres.FirstOrDefault(g => g.Id == genreId);
         }
 
         public void AddGenre(Genre genre)

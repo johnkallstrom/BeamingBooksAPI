@@ -34,7 +34,7 @@ namespace BeamingBooks.API.Services
 
         public AuthenticateResponse AuthenticateAccount(string email, string password)
         {
-            var account = _context.Account.FirstOrDefault(x => x.Email == email);
+            var account = _context.Accounts.FirstOrDefault(x => x.Email == email);
 
             if (account == null) throw new InvalidAccountException("The account does not exist.");
             if (BC.Verify(password, account.PasswordHash) == false) throw new InvalidAccountException("The email or password is incorrect.");
@@ -49,7 +49,7 @@ namespace BeamingBooks.API.Services
         public void Register(RegisterAccountDto model)
         {
             // validate entered email
-            if (_context.Account.Any(a => a.Email == model.Email)) throw new EmailExistsException("The email you entered already exists.");
+            if (_context.Accounts.Any(a => a.Email == model.Email)) throw new EmailExistsException("The email you entered already exists.");
 
             // map dto to entity
             var account = _mapper.Map<Account>(model);
@@ -59,18 +59,18 @@ namespace BeamingBooks.API.Services
             account.Created = DateTime.UtcNow;
 
             // save to db
-            _context.Account.Add(account);
+            _context.Accounts.Add(account);
             _context.SaveChanges();
         }
 
         public IEnumerable<Account> GetAccounts()
         {
-            return _context.Account.ToList();
+            return _context.Accounts.ToList();
         }
 
         public Account GetAccount(int id)
         {
-            return _context.Account.FirstOrDefault(u => u.Id == id);
+            return _context.Accounts.FirstOrDefault(u => u.Id == id);
         }
 
         private string GenerateJwtToken(Account account)
